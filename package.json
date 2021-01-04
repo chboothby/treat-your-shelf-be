@@ -7,8 +7,9 @@
     "test": "jest",
     "seed": "NODE_ENV=test knex seed:run",
     "setup-dbs": "psql -f ./db/setup.sql",
-    "migrate-make": "knex migrate:latest",
-    "migrate-rollback": "knex migrate:rollback"
+    "migrate-make": "NODE_ENV=test knex migrate:make",
+    "migrate-latest": "NODE_ENV=test knex migrate:latest",
+    "migrate-rollback": "NODE_ENV=test knex migrate:rollback"
   },
   "repository": {
     "type": "git",
