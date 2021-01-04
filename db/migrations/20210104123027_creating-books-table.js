@@ -7,7 +7,7 @@ exports.up = function (knex) {
     booksTable.text("description");
     booksTable.text("thumbnail");
     booksTable.integer("published_year").notNullable();
-    booksTable.integer("ISBN");
+    booksTable.bigInteger("ISBN");
     booksTable.text("other_identifier");
     booksTable
       .datetime("date_posted", { useTz: false })

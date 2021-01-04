@@ -1,2 +1,2 @@
 exports.userData = require("./users");
-exports.booksData = require("./books");
+exports.bookData = require("./books");
