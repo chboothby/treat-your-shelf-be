@@ -6,8 +6,9 @@ exports.up = function (knex) {
     booksTable.specificType("authors", "varchar[]").notNullable();
     booksTable.text("description");
     booksTable.text("thumbnail");
-    booksTable.integer("year").notNullable();
-    booksTable.integer("ISBN").notNullable();
+    booksTable.integer("published_year").notNullable();
+    booksTable.integer("ISBN");
+    booksTable.text("other_identifier");
     booksTable
       .datetime("date_posted", { useTz: false })
       .defaultTo(knex.fn.now());
