@@ -9,7 +9,8 @@
     "setup-dbs": "psql -f ./db/setup.sql",
     "migrate-make": "NODE_ENV=test knex migrate:make",
     "migrate-latest": "NODE_ENV=test knex migrate:latest",
-    "migrate-rollback": "NODE_ENV=test knex migrate:rollback"
+    "migrate-rollback": "NODE_ENV=test knex migrate:rollback",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
@@ -23,10 +24,13 @@
   },
   "homepage": "https://github.com/chboothby/treat-yo-shelf-BE#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "knex": "^0.21.15",
     "pg": "^8.5.1"
   },
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.6"
   }
 }
