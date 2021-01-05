@@ -193,7 +193,35 @@ describe("/api", () => {
     });
     // SORT/FILTER BOOKSHELF BOOKS
     // POST
+    test("POST - responds with 201, allows user to post book and returns object containing newly added book", () => {
+      return request(app)
+        .post("/api/users/1/books")
+        .send({
+          title: "Pride and Prejudice",
+          authors: ["Jane Austen"],
+          published_year: 2016,
+          ISBN: "9781911060130",
+          thumbnail:
+            "http://books.google.com/books/content?id=dZ7zjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+          quality: 4,
+          owner_comments: "My fave book",
+        })
+        .expect(201)
+        .then(({ body: { book } }) => {
+          expect(Object.keys(book).length).toBe(14);
+        });
+    });
     // ERRORS
+    describe("ERRORS", () => {
+      test("GET - 404 user does not exist", () => {
+        return request(app)
+          .get("/api/users/100/books")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist");
+          });
+      });
+    });
   });
   // ALL BOOKS *******************
   describe("/api/books", () => {

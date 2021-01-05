@@ -4,6 +4,7 @@ const {
   removeUser,
   patchUser,
   fetchAllUsersBooks,
+  postNewBook,
 } = require("../models/users");
 
 exports.getUserById = (req, res, next) => {
@@ -48,6 +49,17 @@ exports.getAllUsersBooks = (req, res, next) => {
   fetchAllUsersBooks(user_id)
     .then((books) => {
       res.status(200).send({ books });
+    })
+    .catch(next);
+};
+
+exports.addNewBook = (req, res, next) => {
+  const { user_id } = req.params;
+  const newBook = req.body;
+  newBook.owner_id = user_id;
+  postNewBook(newBook)
+    .then((book) => {
+      res.status(201).send({ book });
     })
     .catch(next);
 };

@@ -1,3 +1,4 @@
+const { on } = require("../db/connection");
 const connection = require("../db/connection");
 
 const formatUser = ({ user_score, user_votes, ...rest }) => {
@@ -6,6 +7,18 @@ const formatUser = ({ user_score, user_votes, ...rest }) => {
     user_rating: user_score / user_votes || 0,
   };
   return user;
+};
+
+const checkUserExists = async (user_id) => {
+  const userExists = await connection
+    .select("*")
+    .from("users")
+    .where("user_id", "=", user_id)
+    .then((user) => {
+      return user.length !== 0;
+    });
+
+  return userExists;
 };
 
 exports.fetchUserById = (user_id) => {
@@ -80,7 +93,7 @@ exports.patchUser = (user_id, updates) => {
 };
 
 exports.fetchAllUsersBooks = (user_id) => {
-  return connection
+  const booksPromise = connection
     .select("*")
     .from("books")
     .where("owner_id", "=", user_id)
@@ -90,5 +103,26 @@ exports.fetchAllUsersBooks = (user_id) => {
         books: ownersBooks,
       };
       return books;
+    });
+
+  const userExists = checkUserExists(user_id).then((response) => {
+    return response;
+  });
+
+  return Promise.all([booksPromise, userExists]).then(([books, userExists]) => {
+    if (userExists) {
+      return books;
+    } else {
+      return Promise.reject({ status: 404, msg: "User does not exist" });
+    }
+  });
+};
+
+exports.postNewBook = (newBook) => {
+  return connection("books")
+    .insert(newBook)
+    .returning("*")
+    .then((book) => {
+      return book[0];
     });
 };
