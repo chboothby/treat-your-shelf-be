@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "seed": "NODE_ENV=test knex seed:run",
     "setup-dbs": "psql -f ./db/setup.sql",
     "migrate-make": "NODE_ENV=test knex migrate:make",
@@ -27,7 +27,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "knex": "^0.21.15",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "supertest": "^6.0.1"
   },
   "devDependencies": {
     "jest": "^26.6.3",
