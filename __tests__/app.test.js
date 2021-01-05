@@ -224,8 +224,17 @@ describe("/api", () => {
     });
   });
   // ALL BOOKS *******************
-  describe("/api/books", () => {
+  describe.only("/api/books", () => {
     // GET
+    test("GET all books, responds with 200 and an array of book objects and book count key", () => {
+      return request(app)
+        .get("/api/books")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.book_count).toBe(4);
+          expect(books.books.length).toBe(4);
+        });
+    });
     // SORT
     // FILTER
   });

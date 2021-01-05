@@ -1,4 +1,3 @@
-const { on } = require("../db/connection");
 const connection = require("../db/connection");
 
 const formatUser = ({ user_score, user_votes, ...rest }) => {
