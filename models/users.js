@@ -19,8 +19,14 @@ exports.fetchUserById = (user_id) => {
     });
 };
 
-exports.postNewUser = ({ location, ...rest }) => {
-  const newUser = { ...rest, location: `(${location[0]},${location[1]})` };
+exports.postNewUser = (user) => {
+  if (Object.keys(user).length === 0)
+    return Promise.reject({ status: 400, msg: "Empty request body" });
+  const { location, ...rest } = user;
+  const newUser = {
+    ...rest,
+    location: `(${location[0]},${location[1]})`,
+  };
   return connection
     .insert(newUser)
     .into("users")

@@ -48,5 +48,15 @@ describe("/api", () => {
           });
       });
     });
+    describe("ERRORS", () => {
+      it("POST - 400 empty post request", () => {
+        return request(app)
+          .post("/api/users")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Empty request body");
+          });
+      });
+    });
   });
 });
