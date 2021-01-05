@@ -47,8 +47,44 @@ describe("/api", () => {
             ]);
           });
       });
+
+      test("PATCH returns 201 and object containing updated user", () => {
+        return request(app)
+          .patch("/api/users/2")
+          .send({
+            username: "bob",
+          })
+          .expect(201)
+          .then(({ body: { user } }) => {
+            expect(user.username).toBe("bob");
+          });
+      });
+
+      test("PATCH returns 201 and updates user rating", () => {
+        return request(app)
+          .patch("/api/users/2")
+          .send({
+            user_score: 3,
+          })
+          .expect(201)
+          .then(({ body: { user } }) => {
+            expect(user.user_rating).toBe(3);
+          });
+      });
+
       test("DELETE request returns 204 for successful delete", () => {
-        return request(app).delete("/api/users/1").expect(204);
+        return request(app)
+          .delete("/api/users/1")
+          .expect(204)
+          .then(() => {
+            return connection
+              .select("*")
+              .from("users")
+              .where("user_id", "=", 1);
+          })
+          .then((rows) => {
+            expect(rows.length).toBe(0);
+          });
       });
     });
 
@@ -111,12 +147,38 @@ describe("/api", () => {
             expect(msg).toBe("User does not exist");
           });
       });
-      it.only("DELETE - 400 id NaN", () => {
+      it("DELETE - 400 id NaN", () => {
         return request(app)
           .delete("/api/users/NaN")
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("Invalid input type");
+          });
+      });
+      it("PATCH - 400 empty request", () => {
+        return request(app)
+          .patch("/api/users/2")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Empty request body");
+          });
+      });
+      it("PATCH - 400 invalid request", () => {
+        return request(app)
+          .patch("/api/users/2")
+          .send({ potato: 1 })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input type");
+          });
+      });
+      it("PATCH - 404 user does not exist", () => {
+        return request(app)
+          .patch("/api/users/1000")
+          .send({ name: "Eric" })
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist");
           });
       });
     });

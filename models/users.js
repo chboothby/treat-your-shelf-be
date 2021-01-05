@@ -1,3 +1,4 @@
+const { queryBuilder } = require("../db/connection");
 const connection = require("../db/connection");
 
 const formatUser = ({ user_score, user_votes, ...rest }) => {
@@ -52,5 +53,28 @@ exports.removeUser = (user_id) => {
       if (rows === 0)
         return Promise.reject({ status: 404, msg: "User does not exist" });
       return rows;
+    });
+};
+
+exports.patchUser = (user_id, updates) => {
+  if (Object.keys(updates).length === 0)
+    return Promise.reject({ status: 400, msg: "Empty request body" });
+  const { user_score } = updates;
+  return connection("users")
+    .update(updates)
+    .where("user_id", "=", user_id)
+    .modify((queryBuilder) => {
+      if (user_score) {
+        queryBuilder.update({
+          user_score: connection.raw(`user_score + ${user_score}`),
+        });
+        queryBuilder.increment({ user_votes: 1 });
+      }
+    })
+    .returning("*")
+    .then((user) => {
+      if (user.length === 0)
+        return Promise.reject({ status: 404, msg: "User does not exist" });
+      return formatUser(user[0]);
     });
 };
