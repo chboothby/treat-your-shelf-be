@@ -57,6 +57,48 @@ describe("/api", () => {
             expect(msg).toBe("Empty request body");
           });
       });
+      it("POST - 400 incorrect data type", () => {
+        return request(app)
+          .post("/api/users")
+          .send({
+            name: "steve",
+            username: "stevo",
+            email: "stevo@gmail.com",
+            location: "liverpool",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input type");
+          });
+      });
+      it("POST - 400 incomplete request", () => {
+        return request(app)
+          .post("/api/users")
+          .send({
+            name: "steve",
+            username: "stevo",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Incomplete request");
+          });
+      });
+      it("GET - 404 id out of range", () => {
+        return request(app)
+          .get("/api/users/1000")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist");
+          });
+      });
+      it("GET - 400 id NaN", () => {
+        return request(app)
+          .get("/api/users/NaN")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input type");
+          });
+      });
     });
   });
 });

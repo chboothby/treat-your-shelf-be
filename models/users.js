@@ -14,6 +14,9 @@ exports.fetchUserById = (user_id) => {
     .from("users")
     .where("user_id", "=", user_id)
     .then((users) => {
+      if (users.length === 0) {
+        return Promise.reject({ status: 404, msg: "User does not exist" });
+      }
       const user = formatUser(users[0]);
       return user;
     });
@@ -23,6 +26,12 @@ exports.postNewUser = (user) => {
   if (Object.keys(user).length === 0)
     return Promise.reject({ status: 400, msg: "Empty request body" });
   const { location, ...rest } = user;
+  if (!location) {
+    return Promise.reject({
+      status: 400,
+      msg: "Incomplete request",
+    });
+  }
   const newUser = {
     ...rest,
     location: `(${location[0]},${location[1]})`,
