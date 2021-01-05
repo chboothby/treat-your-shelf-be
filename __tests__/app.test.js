@@ -7,10 +7,10 @@ describe("./api", () => {
   beforeEach(() => connection.seed.run());
   afterAll(() => connection.destroy());
 
-  describe("/api/user/", () => {
-    describe("/api/user/:user_id", () => {
+  describe("/api/users/", () => {
+    describe("/api/users/:user_id", () => {
       test("GET request returns all user data", () => {
-        return request(app).get("/api/user/1").expect(200);
+        return request(app).get("/api/users/1").expect(200);
         //   .then((res) => {
         //     expect(res.body.topics.length).toBe(3);
       });
