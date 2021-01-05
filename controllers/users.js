@@ -1,4 +1,9 @@
-const { fetchUserById, postNewUser, removeUser } = require("../models/users");
+const {
+  fetchUserById,
+  postNewUser,
+  removeUser,
+  patchUser,
+} = require("../models/users");
 
 exports.getUserById = (req, res, next) => {
   const { user_id } = req.params;
@@ -23,6 +28,16 @@ exports.deleteUser = (req, res, next) => {
   removeUser(user_id)
     .then(() => {
       res.status(204).send();
+    })
+    .catch(next);
+};
+
+exports.updateUser = (req, res, next) => {
+  const { user_id } = req.params;
+  const updates = req.body;
+  patchUser(user_id, updates)
+    .then((user) => {
+      res.status(201).send({ user });
     })
     .catch(next);
 };
