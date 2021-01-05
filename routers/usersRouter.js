@@ -4,6 +4,7 @@ const {
   addNewUser,
   deleteUser,
   updateUser,
+  getAllUsersBooks,
 } = require("../controllers/users");
 
 usersRouter.route("/").post(addNewUser);
@@ -12,5 +13,6 @@ usersRouter
   .get(getUserById)
   .delete(deleteUser)
   .patch(updateUser);
+usersRouter.route("/:user_id/books").get(getAllUsersBooks);
 
 module.exports = usersRouter;

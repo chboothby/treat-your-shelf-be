@@ -1,4 +1,3 @@
-const { queryBuilder } = require("../db/connection");
 const connection = require("../db/connection");
 
 const formatUser = ({ user_score, user_votes, ...rest }) => {
@@ -45,6 +44,7 @@ exports.postNewUser = (user) => {
       return formatUser(users[0]);
     });
 };
+
 exports.removeUser = (user_id) => {
   return connection("users")
     .delete()
@@ -76,5 +76,19 @@ exports.patchUser = (user_id, updates) => {
       if (user.length === 0)
         return Promise.reject({ status: 404, msg: "User does not exist" });
       return formatUser(user[0]);
+    });
+};
+
+exports.fetchAllUsersBooks = (user_id) => {
+  return connection
+    .select("*")
+    .from("books")
+    .where("owner_id", "=", user_id)
+    .then((ownersBooks) => {
+      const books = {
+        book_count: ownersBooks.length,
+        books: ownersBooks,
+      };
+      return books;
     });
 };

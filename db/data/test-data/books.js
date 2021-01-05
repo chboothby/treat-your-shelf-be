@@ -23,4 +23,28 @@ module.exports = [
     description:
       "Celebrate 20 years of Harry Potter magic! Dark times have come to Hogwarts. After the Dementors' attack on his cousin Dudley, Harry Potter knows that Voldemort will stop at nothing to find him. There are many who deny the Dark Lord's return, but Harry is not alone: a secret order gathers at Grimmauld Place to fight against the Dark forces. Harry must allow Professor Snape to teach him how to protect himself from Voldemort's savage assaults on his mind. But they are growing stronger by the day and Harry is running out of time.These new editions of the classic and internationally bestselling, multi-award-winning series feature instantly pick-up-able new jackets by Jonny Duddle, with huge child appeal, to bring Harry Potter to the next generation of readers. It's time to PASS THE MAGIC ON ...",
   },
+  {
+    owner_id: 1,
+    title: "Fifty Shades of Grey",
+    authors: ["E. L. James"],
+    published_year: 2013,
+    thumbnail:
+      "http://books.google.com/books/content?id=GbVdlAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+    ISBN: 9780385537674,
+    quality: 1,
+    description:
+      "When Anastasia Steele, a young literature student, interviews wealthy young entrepreneur Christian Grey for her campus magazine, their initial meeting introduces Anastasia to an exciting new world that will change them both forever.",
+  },
+  {
+    owner_id: 2,
+    title: "The Return of the King",
+    authors: ["J. R. R. Tolkien"],
+    published_year: 2012,
+    thumbnail:
+      "http://books.google.com/books/content?id=WZ0f_yUgc0UC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+    ISBN: 9780547952048,
+    quality: 3,
+    description:
+      "The third volume in J.R.R. Tolkien's epic adventure THE LORD OF THE RINGS One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them As the Shadow of Mordor grows across the land, the Companions of the Ring have become involved in separate adventures. Aragorn, revealed as the hidden heir of the ancient Kings of the West, has joined with the Riders of Rohan against the forces of Isengard, and takes part in the desperate victory of the Hornburg.",
+  },
 ];
