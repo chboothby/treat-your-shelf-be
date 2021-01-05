@@ -47,7 +47,11 @@ describe("/api", () => {
             ]);
           });
       });
+      test("DELETE request returns 204 for successful delete", () => {
+        return request(app).delete("/api/users/1").expect(204);
+      });
     });
+
     describe("ERRORS", () => {
       it("POST - 400 empty post request", () => {
         return request(app)
@@ -94,6 +98,22 @@ describe("/api", () => {
       it("GET - 400 id NaN", () => {
         return request(app)
           .get("/api/users/NaN")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input type");
+          });
+      });
+      it("DELETE - 404 id out of range", () => {
+        return request(app)
+          .delete("/api/users/1000")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist");
+          });
+      });
+      it.only("DELETE - 400 id NaN", () => {
+        return request(app)
+          .delete("/api/users/NaN")
           .expect(400)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("Invalid input type");

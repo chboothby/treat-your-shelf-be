@@ -1,7 +1,11 @@
 exports.up = function (knex) {
   return knex.schema.createTable("books", (booksTable) => {
     booksTable.increments("book_id").primary();
-    booksTable.integer("owner_id").references("users.user_id").notNullable();
+    booksTable
+      .integer("owner_id")
+      .references("users.user_id")
+      .onDelete("cascade")
+      .notNullable();
     booksTable.text("title").notNullable();
     booksTable.specificType("authors", "varchar[]").notNullable();
     booksTable.text("description");
