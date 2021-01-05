@@ -1,4 +1,4 @@
-const { fetchUserById, postNewUser } = require("../models/users");
+const { fetchUserById, postNewUser, removeUser } = require("../models/users");
 
 exports.getUserById = (req, res, next) => {
   const { user_id } = req.params;
@@ -14,6 +14,15 @@ exports.addNewUser = (req, res, next) => {
   postNewUser(newUser)
     .then((user) => {
       res.status(201).send({ user });
+    })
+    .catch(next);
+};
+
+exports.deleteUser = (req, res, next) => {
+  const { user_id } = req.params;
+  removeUser(user_id)
+    .then(() => {
+      res.status(204).send();
     })
     .catch(next);
 };

@@ -44,3 +44,13 @@ exports.postNewUser = (user) => {
       return formatUser(users[0]);
     });
 };
+exports.removeUser = (user_id) => {
+  return connection("users")
+    .delete()
+    .where("user_id", "=", user_id)
+    .then((rows) => {
+      if (rows === 0)
+        return Promise.reject({ status: 404, msg: "User does not exist" });
+      return rows;
+    });
+};
