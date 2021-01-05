@@ -10,10 +10,6 @@ exports.seed = function (knex) {
       return knex.insert(userData).into("users").returning("*");
     })
     .then((userRows) => {
-      console.log(userRows);
       return knex.insert(bookData).into("books").returning("*");
-    })
-    .then((bookRows) => {
-      console.log(bookRows);
     });
 };
