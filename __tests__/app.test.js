@@ -250,7 +250,7 @@ describe("/api", () => {
           expect(Object.keys(book).length).toBe(14);
         });
     });
-    test.only("PATCH responds with 201 and object containing updated book", () => {
+    test("PATCH responds with 201 and object containing updated book", () => {
       return request(app)
         .patch("/api/books/2")
         .send({ owner_comments: "The best book ever written IMO" })
@@ -262,7 +262,7 @@ describe("/api", () => {
     });
     // UPDATE - UPLOAD BOOK PHOTOS
     // UPDATE/SWAP
-    test.only("PATCH - book swap responds with 201 and updated book (updates owner and adds prev owner)", () => {
+    test("PATCH - book swap responds with 201 and updated book (updates owner and adds prev owner)", () => {
       return request(app)
         .patch("/api/books/2")
         .send({ new_owner_id: 1 })
@@ -273,5 +273,7 @@ describe("/api", () => {
         });
     });
     // DELETE
+    // ERRORs
+    // patch - invalid user, nonexistent users, invalid book_id
   });
 });
