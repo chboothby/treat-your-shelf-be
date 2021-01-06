@@ -20,6 +20,7 @@ exports.up = function (knex) {
     booksTable.text("owner_comments");
     booksTable.specificType("photo", "bytea");
     booksTable.specificType("previous_owners", "INT[]");
+    booksTable.boolean("display_book").defaultTo(true);
   });
 };
 

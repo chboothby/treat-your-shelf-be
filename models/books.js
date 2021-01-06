@@ -24,7 +24,7 @@ exports.fetchBookById = (book_id) => {
 };
 
 exports.patchBook = (
-  { owner_comments, quality, photo, new_owner_id },
+  { owner_comments, quality, photo, new_owner_id, display_book },
   book_id
 ) => {
   return connection
@@ -34,7 +34,13 @@ exports.patchBook = (
     .then((response) => {
       const { owner_id } = response[0];
       return connection("books")
-        .update({ owner_comments, quality, photo, owner_id: new_owner_id })
+        .update({
+          owner_comments,
+          quality,
+          photo,
+          owner_id: new_owner_id,
+          display_book,
+        })
         .modify((queryBuilder) => {
           if (new_owner_id) {
             queryBuilder.update({
@@ -50,5 +56,14 @@ exports.patchBook = (
         .then((book) => {
           return book[0];
         });
+    });
+};
+
+exports.removeBookById = (book_id) => {
+  return connection("books")
+    .delete()
+    .where("book_id", "=", book_id)
+    .then((rows) => {
+      return rows;
     });
 };

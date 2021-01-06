@@ -208,7 +208,7 @@ describe("/api", () => {
         })
         .expect(201)
         .then(({ body: { book } }) => {
-          expect(Object.keys(book).length).toBe(14);
+          expect(Object.keys(book).length).toBe(15);
         });
     });
     // ERRORS
@@ -247,17 +247,21 @@ describe("/api", () => {
         .expect(200)
         .then(({ body: { book } }) => {
           expect(book.book_id).toBe(4);
-          expect(Object.keys(book).length).toBe(14);
+          expect(Object.keys(book).length).toBe(15);
         });
     });
     test("PATCH responds with 201 and object containing updated book", () => {
       return request(app)
         .patch("/api/books/2")
-        .send({ owner_comments: "The best book ever written IMO" })
+        .send({
+          owner_comments: "The best book ever written IMO",
+          display_book: false,
+        })
         .expect(201)
         .then(({ body: { book } }) => {
           expect(book.owner_comments).toBe("The best book ever written IMO");
           expect(book.quality).toBe(4);
+          expect(book.display_book).toBe(false);
         });
     });
     // UPDATE - UPLOAD BOOK PHOTOS
@@ -273,7 +277,22 @@ describe("/api", () => {
         });
     });
     // DELETE
-    // ERRORs
-    // patch - invalid user, nonexistent users, invalid book_id
+    test.only("DELETE - responds with 204 and removes book", () => {
+      return request(app)
+        .delete("/api/books/2")
+        .expect(204)
+        .then(() => {
+          return connection
+            .select("*")
+            .from("books")
+            .where("book_id", "=", 2)
+            .then((book) => {
+              expect(book.length).toBe(0);
+            });
+        });
+      // })
+      // ERRORs
+      // patch - invalid user, nonexistent users, invalid book_id
+    });
   });
 });
