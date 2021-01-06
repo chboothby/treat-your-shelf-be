@@ -250,9 +250,28 @@ describe("/api", () => {
           expect(Object.keys(book).length).toBe(14);
         });
     });
-    // GET
-    // UPDATE
+    test.only("PATCH responds with 201 and object containing updated book", () => {
+      return request(app)
+        .patch("/api/books/2")
+        .send({ owner_comments: "The best book ever written IMO" })
+        .expect(201)
+        .then(({ body: { book } }) => {
+          expect(book.owner_comments).toBe("The best book ever written IMO");
+          expect(book.quality).toBe(4);
+        });
+    });
+    // UPDATE - UPLOAD BOOK PHOTOS
     // UPDATE/SWAP
+    test.only("PATCH - book swap responds with 201 and updated book (updates owner and adds prev owner)", () => {
+      return request(app)
+        .patch("/api/books/2")
+        .send({ new_owner_id: 1 })
+        .expect(201)
+        .then(({ body: { book } }) => {
+          expect(book.owner_id).toBe(1);
+          expect(book.previous_owners).toEqual([1, 2]);
+        });
+    });
     // DELETE
   });
 });
