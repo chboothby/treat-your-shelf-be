@@ -6,7 +6,7 @@ const connection = require("../db/connection");
 describe("/api", () => {
   beforeEach(() => connection.seed.run());
   afterAll(() => connection.destroy());
-
+  // USERS *************************
   describe("/api/users", () => {
     test("POST returns 201 and object containing new user", () => {
       return request(app)
@@ -47,7 +47,6 @@ describe("/api", () => {
             ]);
           });
       });
-
       test("PATCH returns 201 and object containing updated user", () => {
         return request(app)
           .patch("/api/users/2")
@@ -59,7 +58,6 @@ describe("/api", () => {
             expect(user.username).toBe("bob");
           });
       });
-
       test("PATCH returns 201 and updates user rating", () => {
         return request(app)
           .patch("/api/users/2")
@@ -71,7 +69,6 @@ describe("/api", () => {
             expect(user.user_rating).toBe(3);
           });
       });
-
       test("DELETE request returns 204 for successful delete", () => {
         return request(app)
           .delete("/api/users/1")
@@ -87,7 +84,6 @@ describe("/api", () => {
           });
       });
     });
-
     describe("ERRORS", () => {
       it("POST - 400 empty post request", () => {
         return request(app)
@@ -182,5 +178,71 @@ describe("/api", () => {
           });
       });
     });
+  });
+  // USERS BOOKS *************************
+  describe("/api/users/:user_id/books", () => {
+    // GET
+    test("GET - responds with 200 and array of all books owned by specified owner", () => {
+      return request(app)
+        .get("/api/users/1/books")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.book_count).toBe(2);
+          expect(books.books.length).toBe(2);
+        });
+    });
+    // SORT/FILTER BOOKSHELF BOOKS
+    // POST
+    test("POST - responds with 201, allows user to post book and returns object containing newly added book", () => {
+      return request(app)
+        .post("/api/users/1/books")
+        .send({
+          title: "Pride and Prejudice",
+          authors: ["Jane Austen"],
+          published_year: 2016,
+          ISBN: "9781911060130",
+          thumbnail:
+            "http://books.google.com/books/content?id=dZ7zjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+          quality: 4,
+          owner_comments: "My fave book",
+        })
+        .expect(201)
+        .then(({ body: { book } }) => {
+          expect(Object.keys(book).length).toBe(14);
+        });
+    });
+    // ERRORS
+    describe("ERRORS", () => {
+      test("GET - 404 user does not exist", () => {
+        return request(app)
+          .get("/api/users/100/books")
+          .expect(404)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("User does not exist");
+          });
+      });
+    });
+  });
+  // ALL BOOKS *******************
+  describe.only("/api/books", () => {
+    // GET
+    test("GET all books, responds with 200 and an array of book objects and book count key", () => {
+      return request(app)
+        .get("/api/books")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.book_count).toBe(4);
+          expect(books.books.length).toBe(4);
+        });
+    });
+    // SORT
+    // FILTER
+  });
+  // SINGLE BOOK *******************
+  describe("/api/books/:book_id", () => {
+    // GET
+    // UPDATE
+    // UPDATE/SWAP
+    // DELETE
   });
 });
