@@ -91,11 +91,12 @@ exports.patchUser = (user_id, updates) => {
     });
 };
 
-exports.fetchAllUsersBooks = (user_id) => {
+exports.fetchAllUsersBooks = (user_id, { sort_by, order }) => {
   const booksPromise = connection
     .select("*")
     .from("books")
     .where("owner_id", "=", user_id)
+    .orderBy(sort_by || "date_posted", order || "desc")
     .then((ownersBooks) => {
       const books = {
         book_count: ownersBooks.length,

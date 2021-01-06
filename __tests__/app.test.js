@@ -192,6 +192,21 @@ describe("/api", () => {
         });
     });
     // SORT/FILTER BOOKSHELF BOOKS
+    test.only("GET - allows users to sort bookshelves by date added - default order desc", () => {
+      return request(app)
+        .get("/api/users/1/books")
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted", { descending: true });
+        });
+    });
+    test.only("GET - allows users to sort bookshelves by date added - default order asc", () => {
+      return request(app)
+        .get("/api/users/1/books?sort_by=date_posted&order=asc")
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted");
+        });
+    });
+
     // POST
     test("POST - responds with 201, allows user to post book and returns object containing newly added book", () => {
       return request(app)
@@ -281,13 +296,12 @@ describe("/api", () => {
         .get("/api/books?title=harry%20potter")
         .expect(200)
         .then(({ body: { books } }) => {
-          console.log(books);
           expect(books.books[0].title).toBe(
             "Harry Potter and the Order of the Phoenix"
           );
         });
     });
-    test.only("GET accepts FILTER query allowing users to filter books by author", () => {
+    test("GET accepts FILTER query allowing users to filter books by author", () => {
       return request(app)
         .get("/api/books?author=tolkien")
         .expect(200)
@@ -350,6 +364,34 @@ describe("/api", () => {
     });
 
     // ERRORs
+    test.only("PATCH - book swap responds with 400 for invalid new owner id", () => {
+      return request(app)
+        .patch("/api/books/2")
+        .send({ new_owner_id: "bob" })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Invalid input type");
+        });
+    });
+    test.only("PATCH - book swap responds with 400 for invalid new owner id", () => {
+      return request(app)
+        .patch("/api/books/2")
+        .send({ new_owner_id: 100000 })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
+
+    test.only("PATCH - book swap responds with 400 for out of range book", () => {
+      return request(app)
+        .patch("/api/books/1000000000")
+        .send({ new_owner_id: 2 })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Bad request");
+        });
+    });
     // patch - invalid user, nonexistent users, invalid book_id
   });
 });

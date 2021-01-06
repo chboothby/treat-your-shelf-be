@@ -46,7 +46,7 @@ exports.updateUser = (req, res, next) => {
 
 exports.getAllUsersBooks = (req, res, next) => {
   const { user_id } = req.params;
-  fetchAllUsersBooks(user_id)
+  fetchAllUsersBooks(user_id, req.query)
     .then((books) => {
       res.status(200).send({ books });
     })
