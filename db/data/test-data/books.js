@@ -34,6 +34,7 @@ module.exports = [
       "http://books.google.com/books/content?id=GbVdlAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
     ISBN: 9780385537674,
     quality: 1,
+    date_posted: "01/01/21",
     description:
       "When Anastasia Steele, a young literature student, interviews wealthy young entrepreneur Christian Grey for her campus magazine, their initial meeting introduces Anastasia to an exciting new world that will change them both forever.",
   },
