@@ -198,7 +198,7 @@ describe("/api", () => {
         .post("/api/users/1/books")
         .send({
           title: "Pride and Prejudice",
-          authors: ["Jane Austen"],
+          authors: ["Jane Austen", "Steve"],
           published_year: 2016,
           ISBN: "9781911060130",
           thumbnail:
@@ -237,7 +237,64 @@ describe("/api", () => {
         });
     });
     // SORT
+    test("GET return books SORTED by most recently added as default", () => {
+      return request(app)
+        .get("/api/books")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted", { descending: true });
+        });
+    });
+    test("GET accepts queries sort_by and order", () => {
+      return request(app)
+        .get("/api/books?sort_by=date_posted&order=asc")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted");
+        });
+    });
+    test("GET accepts queries SORT_BY and ORDER", () => {
+      return request(app)
+        .get("/api/books?sort_by=published_year")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("published_year", {
+            descending: true,
+          });
+        });
+    });
+    test("GET accepts queries SORT_BY and ORDER", () => {
+      return request(app)
+        .get("/api/books?sort_by=quality&order=asc")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("quality");
+        });
+    });
     // FILTER
+    test("GET accepts FILTER query allowing users to filter books by title", () => {
+      return request(app)
+        .get("/api/books?title=harry%20potter")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          console.log(books);
+          expect(books.books[0].title).toBe(
+            "Harry Potter and the Order of the Phoenix"
+          );
+        });
+    });
+    test.only("GET accepts FILTER query allowing users to filter books by author", () => {
+      return request(app)
+        .get("/api/books?author=tolkien")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books[0].authors).toBe("J. R. R. Tolkien");
+        });
+    });
   });
   // SINGLE BOOK *******************
   describe("/api/books/:book_id", () => {
@@ -277,7 +334,7 @@ describe("/api", () => {
         });
     });
     // DELETE
-    test.only("DELETE - responds with 204 and removes book", () => {
+    test("DELETE - responds with 204 and removes book", () => {
       return request(app)
         .delete("/api/books/2")
         .expect(204)
@@ -290,9 +347,9 @@ describe("/api", () => {
               expect(book.length).toBe(0);
             });
         });
-      // })
-      // ERRORs
-      // patch - invalid user, nonexistent users, invalid book_id
     });
+
+    // ERRORs
+    // patch - invalid user, nonexistent users, invalid book_id
   });
 });

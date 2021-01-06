@@ -7,7 +7,7 @@ const {
 
 exports.getAllBooks = (req, res, next) => {
   const { user_id } = req.body;
-  fetchAllBooks(user_id)
+  fetchAllBooks(user_id, req.query)
     .then((books) => {
       res.status(200).send({ books });
     })

@@ -118,6 +118,9 @@ exports.fetchAllUsersBooks = (user_id) => {
 };
 
 exports.postNewBook = (newBook) => {
+  if (Array.isArray(newBook.authors)) {
+    newBook.authors = newBook.authors.toString();
+  }
   return connection("books")
     .insert(newBook)
     .returning("*")

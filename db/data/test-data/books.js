@@ -2,7 +2,7 @@ module.exports = [
   {
     owner_id: 1,
     title: "The Count of Monte Cristo",
-    authors: ["Alexandre Dumas"],
+    authors: "Alexandre Dumas",
     published_year: 1945,
     other_identifier: "STANFORD:36105121763440",
     quality: 1,
@@ -14,20 +14,21 @@ module.exports = [
   {
     owner_id: 2,
     title: "Harry Potter and the Order of the Phoenix",
-    authors: ["J. K. Rowling"],
+    authors: "J. K. Rowling",
     published_year: 2014,
     thumbnail:
       "http://books.google.com/books/content?id=p2swDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
     ISBN: 9781408855690,
     quality: 4,
     previous_owners: [1],
+    date_posted: "10/11/2020",
     description:
       "Celebrate 20 years of Harry Potter magic! Dark times have come to Hogwarts. After the Dementors' attack on his cousin Dudley, Harry Potter knows that Voldemort will stop at nothing to find him. There are many who deny the Dark Lord's return, but Harry is not alone: a secret order gathers at Grimmauld Place to fight against the Dark forces. Harry must allow Professor Snape to teach him how to protect himself from Voldemort's savage assaults on his mind. But they are growing stronger by the day and Harry is running out of time.These new editions of the classic and internationally bestselling, multi-award-winning series feature instantly pick-up-able new jackets by Jonny Duddle, with huge child appeal, to bring Harry Potter to the next generation of readers. It's time to PASS THE MAGIC ON ...",
   },
   {
     owner_id: 1,
     title: "Fifty Shades of Grey",
-    authors: ["E. L. James"],
+    authors: "E. L. James",
     published_year: 2013,
     thumbnail:
       "http://books.google.com/books/content?id=GbVdlAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
@@ -39,7 +40,7 @@ module.exports = [
   {
     owner_id: 2,
     title: "The Return of the King",
-    authors: ["J. R. R. Tolkien"],
+    authors: "J. R. R. Tolkien",
     published_year: 2012,
     thumbnail:
       "http://books.google.com/books/content?id=WZ0f_yUgc0UC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
