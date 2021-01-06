@@ -224,15 +224,16 @@ describe("/api", () => {
     });
   });
   // ALL BOOKS *******************
-  describe.only("/api/books", () => {
+  describe("/api/books", () => {
     // GET
     test("GET all books, responds with 200 and an array of book objects and book count key", () => {
       return request(app)
         .get("/api/books")
+        .send({ user_id: 1 })
         .expect(200)
         .then(({ body: { books } }) => {
-          expect(books.book_count).toBe(4);
-          expect(books.books.length).toBe(4);
+          expect(books.book_count).toBe(2);
+          expect(books.books.length).toBe(2);
         });
     });
     // SORT
@@ -240,6 +241,15 @@ describe("/api", () => {
   });
   // SINGLE BOOK *******************
   describe("/api/books/:book_id", () => {
+    test("GET individual book, responds with 200 and a single book object", () => {
+      return request(app)
+        .get("/api/books/4")
+        .expect(200)
+        .then(({ body: { book } }) => {
+          expect(book.book_id).toBe(4);
+          expect(Object.keys(book).length).toBe(14);
+        });
+    });
     // GET
     // UPDATE
     // UPDATE/SWAP
