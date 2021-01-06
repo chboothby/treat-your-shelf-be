@@ -12,7 +12,6 @@ const capitaliseFirstLetter = (str) => {
 exports.fetchAllBooks = (user_id, { sort_by, order, title, author }) => {
   if (title) title = capitaliseFirstLetter(title);
   if (author) author = capitaliseFirstLetter(author);
-
   return connection
     .select("*")
     .from("books")
@@ -22,6 +21,9 @@ exports.fetchAllBooks = (user_id, { sort_by, order, title, author }) => {
       }
       if (title) {
         queryBuilder.where("title", "LIKE", `%${title}%`);
+      }
+      if (author) {
+        queryBuilder.where("authors", "LIKE", `%${author}%`);
       }
     })
     .orderBy(sort_by || "date_posted", order || "desc")

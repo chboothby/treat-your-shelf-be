@@ -198,7 +198,7 @@ describe("/api", () => {
         .post("/api/users/1/books")
         .send({
           title: "Pride and Prejudice",
-          authors: ["Jane Austen"],
+          authors: ["Jane Austen", "Steve"],
           published_year: 2016,
           ISBN: "9781911060130",
           thumbnail:
@@ -276,8 +276,7 @@ describe("/api", () => {
         });
     });
     // FILTER
-    test.only("GET accepts FILTER query allowing users to filter books by title or author", () => {
-      // const filters = [{"title": "Harry Potter"}]
+    test("GET accepts FILTER query allowing users to filter books by title", () => {
       return request(app)
         .get("/api/books?title=harry%20potter")
         .expect(200)
@@ -286,6 +285,14 @@ describe("/api", () => {
           expect(books.books[0].title).toBe(
             "Harry Potter and the Order of the Phoenix"
           );
+        });
+    });
+    test.only("GET accepts FILTER query allowing users to filter books by author", () => {
+      return request(app)
+        .get("/api/books?author=tolkien")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books[0].authors).toBe("J. R. R. Tolkien");
         });
     });
   });
@@ -327,7 +334,7 @@ describe("/api", () => {
         });
     });
     // DELETE
-    test.only("DELETE - responds with 204 and removes book", () => {
+    test("DELETE - responds with 204 and removes book", () => {
       return request(app)
         .delete("/api/books/2")
         .expect(204)

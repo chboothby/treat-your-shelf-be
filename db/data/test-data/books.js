@@ -2,7 +2,7 @@ module.exports = [
   {
     owner_id: 1,
     title: "The Count of Monte Cristo",
-    authors: ["Alexandre Dumas"],
+    authors: "Alexandre Dumas",
     published_year: 1945,
     other_identifier: "STANFORD:36105121763440",
     quality: 1,
@@ -14,7 +14,7 @@ module.exports = [
   {
     owner_id: 2,
     title: "Harry Potter and the Order of the Phoenix",
-    authors: ["J. K. Rowling"],
+    authors: "J. K. Rowling",
     published_year: 2014,
     thumbnail:
       "http://books.google.com/books/content?id=p2swDQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
@@ -28,7 +28,7 @@ module.exports = [
   {
     owner_id: 1,
     title: "Fifty Shades of Grey",
-    authors: ["E. L. James"],
+    authors: "E. L. James",
     published_year: 2013,
     thumbnail:
       "http://books.google.com/books/content?id=GbVdlAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
@@ -40,7 +40,7 @@ module.exports = [
   {
     owner_id: 2,
     title: "The Return of the King",
-    authors: ["J. R. R. Tolkien"],
+    authors: "J. R. R. Tolkien",
     published_year: 2012,
     thumbnail:
       "http://books.google.com/books/content?id=WZ0f_yUgc0UC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",

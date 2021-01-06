@@ -7,7 +7,7 @@ exports.up = function (knex) {
       .onDelete("cascade")
       .notNullable();
     booksTable.text("title").notNullable();
-    booksTable.specificType("authors", "varchar[]").notNullable();
+    booksTable.text("authors").notNullable();
     booksTable.text("description");
     booksTable.text("thumbnail");
     booksTable.integer("published_year").notNullable();
