@@ -1,10 +1,30 @@
 const connection = require("../db/connection");
 
-exports.fetchAllBooks = (user_id) => {
+const capitaliseFirstLetter = (str) => {
+  return str
+    .split(" ")
+    .map((word) => {
+      return `${word[0].toUpperCase()}${word.slice(1)}`;
+    })
+    .join(" ");
+};
+
+exports.fetchAllBooks = (user_id, { sort_by, order, title, author }) => {
+  if (title) title = capitaliseFirstLetter(title);
+  if (author) author = capitaliseFirstLetter(author);
+
   return connection
     .select("*")
     .from("books")
-    .whereNot("owner_id", "=", user_id)
+    .modify((queryBuilder) => {
+      if (user_id) {
+        queryBuilder.whereNot("owner_id", "=", user_id);
+      }
+      if (title) {
+        queryBuilder.where("title", "LIKE", `%${title}%`);
+      }
+    })
+    .orderBy(sort_by || "date_posted", order || "desc")
     .then((books) => {
       return {
         book_count: books.length,

@@ -237,7 +237,57 @@ describe("/api", () => {
         });
     });
     // SORT
+    test("GET return books SORTED by most recently added as default", () => {
+      return request(app)
+        .get("/api/books")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted", { descending: true });
+        });
+    });
+    test("GET accepts queries sort_by and order", () => {
+      return request(app)
+        .get("/api/books?sort_by=date_posted&order=asc")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("date_posted");
+        });
+    });
+    test("GET accepts queries SORT_BY and ORDER", () => {
+      return request(app)
+        .get("/api/books?sort_by=published_year")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("published_year", {
+            descending: true,
+          });
+        });
+    });
+    test("GET accepts queries SORT_BY and ORDER", () => {
+      return request(app)
+        .get("/api/books?sort_by=quality&order=asc")
+        .send({ user_id: 1 })
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.books).toBeSortedBy("quality");
+        });
+    });
     // FILTER
+    test.only("GET accepts FILTER query allowing users to filter books by title or author", () => {
+      // const filters = [{"title": "Harry Potter"}]
+      return request(app)
+        .get("/api/books?title=harry%20potter")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          console.log(books);
+          expect(books.books[0].title).toBe(
+            "Harry Potter and the Order of the Phoenix"
+          );
+        });
+    });
   });
   // SINGLE BOOK *******************
   describe("/api/books/:book_id", () => {
@@ -290,9 +340,9 @@ describe("/api", () => {
               expect(book.length).toBe(0);
             });
         });
-      // })
-      // ERRORs
-      // patch - invalid user, nonexistent users, invalid book_id
     });
+
+    // ERRORs
+    // patch - invalid user, nonexistent users, invalid book_id
   });
 });
