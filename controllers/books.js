@@ -1,4 +1,9 @@
-const { fetchAllBooks, fetchBookById, patchBook } = require("../models/books");
+const {
+  fetchAllBooks,
+  fetchBookById,
+  patchBook,
+  removeBookById,
+} = require("../models/books");
 
 exports.getAllBooks = (req, res, next) => {
   const { user_id } = req.body;
@@ -24,6 +29,15 @@ exports.updateBook = (req, res, next) => {
   patchBook(updates, book_id)
     .then((book) => {
       res.status(201).send({ book });
+    })
+    .catch(next);
+};
+
+exports.deleteBookById = (req, res, next) => {
+  const { book_id } = req.params;
+  removeBookById(book_id)
+    .then((book) => {
+      res.status(204).send();
     })
     .catch(next);
 };
