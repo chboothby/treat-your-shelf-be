@@ -364,7 +364,7 @@ describe("/api", () => {
     });
 
     // ERRORs
-    test.only("PATCH - book swap responds with 400 for invalid new owner id", () => {
+    test("PATCH - book swap responds with 400 for invalid new owner id", () => {
       return request(app)
         .patch("/api/books/2")
         .send({ new_owner_id: "bob" })
@@ -373,7 +373,7 @@ describe("/api", () => {
           expect(msg).toBe("Invalid input type");
         });
     });
-    test.only("PATCH - book swap responds with 400 for invalid new owner id", () => {
+    test("PATCH - book swap responds with 400 for invalid new owner id", () => {
       return request(app)
         .patch("/api/books/2")
         .send({ new_owner_id: 100000 })
@@ -382,16 +382,39 @@ describe("/api", () => {
           expect(msg).toBe("Bad request");
         });
     });
-
-    test.only("PATCH - book swap responds with 400 for out of range book", () => {
+    test("PATCH - book swap responds with 404 for out of range book", () => {
       return request(app)
         .patch("/api/books/1000000000")
         .send({ new_owner_id: 2 })
-        .expect(400)
+        .expect(404)
         .then(({ body: { msg } }) => {
-          expect(msg).toBe("Bad request");
+          expect(msg).toBe("Book does not exist");
         });
     });
-    // patch - invalid user, nonexistent users, invalid book_id
+    test("PATCH - book swap responds with 400 for invalid book id", () => {
+      return request(app)
+        .patch("/api/books/notAnId")
+        .send({ new_owner_id: 2 })
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Invalid input type");
+        });
+    });
+    test("GET individual book, responds with 400 if not a valid book id", () => {
+      return request(app)
+        .get("/api/books/notAnId")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Invalid input type");
+        });
+    });
+    test("GET individual book, responds with 404 if out of range book id", () => {
+      return request(app)
+        .get("/api/books/10000")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Book does not exist");
+        });
+    });
   });
 });
