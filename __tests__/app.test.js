@@ -6,6 +6,16 @@ const connection = require("../db/connection");
 describe("/api", () => {
   beforeEach(() => connection.seed.run());
   afterAll(() => connection.destroy());
+
+  test.only("GET API responds with 200 and a JSON object with descriptions of all available end points", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveProperty("API");
+        expect(typeof body.API).toBe("object");
+      });
+  });
   // USERS *************************
   describe("/api/users", () => {
     test("POST returns 201 and object containing new user", () => {
