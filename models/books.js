@@ -10,18 +10,6 @@ const capitaliseFirstLetter = (str) => {
     .join(" ");
 };
 
-// const checkBookExists = async (book_id) => {
-//   const bookExists = await connection
-//     .select("*")
-//     .from("books")
-//     .where("Book_id", "=", book_id)
-//     .then((books) => {
-//       return books.length !== 0;
-//     });
-
-//   return bookExists;
-// };
-
 exports.fetchAllBooks = (user_id, { sort_by, order, title, author }) => {
   if (title) title = capitaliseFirstLetter(title);
   if (author) author = capitaliseFirstLetter(author);

@@ -6,6 +6,7 @@ const {
   handleCustomErrors,
   handlePSQLErrors,
   handleInternalErrors,
+  send404,
 } = require("./controllers/errors");
 
 app.use(cors());
@@ -15,5 +16,6 @@ app.use("/api", apiRouter);
 app.use(handleCustomErrors);
 app.use(handlePSQLErrors);
 app.use(handleInternalErrors);
+app.route("/*").all(send404);
 
 module.exports = app;
