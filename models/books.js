@@ -106,6 +106,9 @@ exports.removeBookById = (book_id) => {
     .delete()
     .where("book_id", "=", book_id)
     .then((rows) => {
+      if (rows === 0) {
+        return Promise.reject({ status: 404, msg: "Book does not exist" });
+      }
       return rows;
     });
 };
