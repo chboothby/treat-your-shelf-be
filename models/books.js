@@ -26,8 +26,9 @@ exports.fetchAllBooks = (user_id, { sort_by, order, title, author }) => {
   if (title) title = capitaliseFirstLetter(title);
   if (author) author = capitaliseFirstLetter(author);
   return connection
-    .select("*")
+    .select(["books.*", "users.location AS book_location"])
     .from("books")
+    .join("users", "users.user_id", "books.owner_id")
     .modify((queryBuilder) => {
       if (user_id) {
         queryBuilder.whereNot("owner_id", "=", user_id);

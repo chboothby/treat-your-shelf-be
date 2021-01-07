@@ -219,6 +219,15 @@ describe("/api", () => {
           expect(books.books).toBeSortedBy("date_posted");
         });
     });
+    test("GET returns books object with empty array if user has no books on bookshelf", () => {
+      return request(app)
+        .get("/api/users/3/books")
+        .expect(200)
+        .then(({ body: { books } }) => {
+          expect(books.book_count).toBe(0);
+          expect(books.books.length).toBe(0);
+        });
+    });
 
     // POST
     test("POST - responds with 201, allows user to post book and returns object containing newly added book", () => {
@@ -236,7 +245,7 @@ describe("/api", () => {
         })
         .expect(201)
         .then(({ body: { book } }) => {
-          expect(Object.keys(book).length).toBe(15);
+          expect(Object.keys(book).length).toBe(16);
         });
     });
     // ERRORS
@@ -289,7 +298,7 @@ describe("/api", () => {
   // ALL BOOKS *******************
   describe("/api/books", () => {
     // GET
-    test("GET all books, responds with 200 and an array of book objects and book count key", () => {
+    test.only("GET all books, responds with 200 and an array of book objects and book count key", () => {
       return request(app)
         .get("/api/books")
         .send({ user_id: 1 })
@@ -366,7 +375,7 @@ describe("/api", () => {
         .expect(200)
         .then(({ body: { book } }) => {
           expect(book.book_id).toBe(4);
-          expect(Object.keys(book).length).toBe(15);
+          expect(Object.keys(book).length).toBe(16);
         });
     });
     test("PATCH responds with 201 and object containing updated book", () => {
