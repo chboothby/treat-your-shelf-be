@@ -119,7 +119,7 @@ describe("/api", () => {
             expect(msg).toBe("Incomplete request");
           });
       });
-      it.only("POST - 400 incomplete request", () => {
+      it("POST - 400 incomplete request", () => {
         return request(app)
           .post("/api/users")
           .send({
@@ -247,6 +247,40 @@ describe("/api", () => {
           .expect(404)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("User does not exist");
+          });
+      });
+      test("GET - 400 user ID NaN", () => {
+        return request(app)
+          .get("/api/users/burt/books")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Invalid input type");
+          });
+      });
+      test("POST - 400 empty request", () => {
+        return request(app)
+          .post("/api/users/1/books")
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Incomplete request");
+          });
+      });
+      test("POST - 400 user does not exist", () => {
+        return request(app)
+          .post("/api/users/3/books")
+          .send({
+            title: "Pride and Prejudice",
+            authors: ["Jane Austen", "Steve"],
+            published_year: 2016,
+            ISBN: "9781911060130",
+            thumbnail:
+              "http://books.google.com/books/content?id=dZ7zjwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+            quality: 4,
+            owner_comments: "My fave book",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Bad request");
           });
       });
     });
