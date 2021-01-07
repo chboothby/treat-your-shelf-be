@@ -7,7 +7,7 @@ describe("/api", () => {
   beforeEach(() => connection.seed.run());
   afterAll(() => connection.destroy());
 
-  test.only("GET API responds with 200 and a JSON object with descriptions of all available end points", () => {
+  test("GET API responds with 200 and a JSON object with descriptions of all available end points", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -308,7 +308,7 @@ describe("/api", () => {
   // ALL BOOKS *******************
   describe("/api/books", () => {
     // GET
-    test.only("GET all books, responds with 200 and an array of book objects and book count key", () => {
+    test("GET all books, responds with 200 and an array of book objects and book count key", () => {
       return request(app)
         .get("/api/books")
         .send({ user_id: 1 })

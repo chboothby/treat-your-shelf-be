@@ -3,7 +3,8 @@
     "description": "Serves up a description of all available api endpoints"
   },
   "POST /api/users": {
-    "description": "Adds new user and responds with newly created user",
+    "description": "Adds new user and responds with newly created user, username must be unique",
+    "mandatoryFields": ["name", "username", "email"],
     "requestExample": {
       "name": "John",
       "username": "john87",
@@ -16,7 +17,7 @@
       "username": "john87",
       "email": "john67@email.com",
       "avatar_pic": null,
-      "location": "(42.3212, 2.3212)",
+      "location": { "y": 42.3212, "x": 2.3212 },
       "user_rating": 3
     }
   },
@@ -29,7 +30,7 @@
         "username": "john87",
         "email": "john67@email.com",
         "avatar_pic": null,
-        "location": "(42.3212, 2.3212)",
+        "location": { "y": 42.3212, "x": 2.3212 },
         "user_rating": 3
       }
     }
@@ -47,7 +48,7 @@
         "username": "john87",
         "email": "john67@email.com",
         "avatar_pic": null,
-        "location": "(42.3212, 2.3212)",
+        "location": { "x": 42.3212, "y": 2.3212 },
         "user_rating": 3
       }
     }
@@ -64,7 +65,7 @@
         "username": "john87",
         "email": "john67@email.com",
         "avatar_pic": null,
-        "location": "(42.3212, 2.3212)",
+        "location": { "x": 42.3212, "y": 2.3212 },
         "user_rating": 4
       }
     }
@@ -73,7 +74,11 @@
     "description": "Removes user corresponding to given user_id and responds with 204"
   },
   "GET /api/users/:user_id/books": {
-    "description": "Serves up books object containing an array of book objects and book count belonging to user with corresponding user_id",
+    "description": "Serves up books object containing an array of book objects and book count belonging to user with corresponding user_id ordered by most recently posted by default",
+    "acceptedQueries": {
+      "sort_by": ["date_posted"],
+      "order": ["asc", "desc"]
+    },
     "exampleResponse": {
       "books": {
         "book_count": 1,
@@ -93,7 +98,8 @@
             "owner_comments": "my favourite book",
             "previous_owners": null,
             "dislay_book": true,
-            "photo": null
+            "photo": null,
+            "book_location": { "x": 23.1245, "y": 2.2598 }
           }
         ]
       }
@@ -101,9 +107,10 @@
   },
   "POST /api/users/:user_id/books": {
     "description": "Adds new book to given users book shelf, responds with new book object",
+    "mandatoryFields": ["title", "authors", "quality"],
     "requestExample": {
       "title": "Example1",
-      "authors": "Author1",
+      "authors": ["Author1"],
       "description": "example description...",
       "published_year": 2001,
       "thumbnail": "link-to-book-thumnbnail",
@@ -126,31 +133,61 @@
         "owner_comments": "my favourite book",
         "previous_owners": null,
         "dislay_book": true,
-        "photo": null
+        "photo": null,
+        "book_location": { "x": 23.1245, "y": 2.2598 }
       }
     }
   },
   "GET /api/books": {
-    "description": "Serves up an array of all book objects"
+    "description": "Serves up an array of all book objects sorted by most recently added as default. If user_id sent in request body, only books without that owner will be shown",
+    "requestBody": {
+      "user_id": 1
+    },
+    "acceptedQueries": [
+      {
+        "order_by": ["date_posted", "year_published", "quality"],
+        "sort": ["asc", "desc"],
+        "title": "bookTitle",
+        "author": "bookAuthor"
+      }
+    ]
   },
   "UPDATE /api/books/:book_id": {
     "description": "Updates given book info and responds with updated book of given book_id",
-    "requestExample": "",
+    "requestExample": { "owner_comments": "A true classic" },
     "responseExample": {
       "book": {
         "owner_id": "1",
         "title": "The Count of Monte Cristo",
         "authors": "Alexandre Dumas",
         "published_year": "1945",
+        "ISBN": null,
         "other_identifier": "STANFORD:36105121763440",
         "quality": "1",
         "thumbnail": "http://books.google.com/books/content?id=7lkNAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-        "description": "The Count of Monte Cristo (French: Le Comte de Monte-Cristo) is an adventure novel by French author Alexandre Dumas completed in 1844. It is one of the author's most popular works, along with The Three Musketeers. Like many of his novels, it is expanded from plot outlines suggested by his collaborating ghostwriter Auguste Maquet.The story takes place in France, Italy, and islands in the Mediterranean during the historical events of 1815-1839: the era of the Bourbon Restoration through the reign of Louis-Philippe of France. It begins just before the Hundred Days period (when Napoleon returned to power after his exile). The historical setting is a fundamental element of the book, an adventure story primarily concerned with themes of hope, justice, vengeance, mercy, and forgiveness. It centres around a man who is wrongfully imprisoned, escapes from jail, acquires a fortune, and sets about getting revenge on those responsible for his imprisonment. However, his plans have devastating consequences for the innocent as well as the guilty. In addition, it is a story that involves romance, loyalty, betrayal, and selfishness, shown throughout the story as characters slowly reveal their true inner nature.The book is considered a literary classic today. According to Luc Sante, \"The Count of Monte Cristo has become a fixture of Western civilization's literature, as inescapable and immediately identifiable as Mickey Mouse, Noah's flood, and the story of Little Red Riding Hood."
+        "description": "Books description...",
+        "owner_comments": "A true classic",
+        "photo": null
       }
     }
   },
   "GET /api/books/:book_id": {
-    "description": "Serves up a book object containing the details of book matching given book_id"
+    "description": "Serves up a book object containing the details of book matching given book_id",
+    "exampleResponse": {
+      "book": {
+        "owner_id": "1",
+        "title": "The Count of Monte Cristo",
+        "authors": "Alexandre Dumas",
+        "published_year": "1945",
+        "ISBN": null,
+        "other_identifier": "STANFORD:36105121763440",
+        "quality": "1",
+        "thumbnail": "http://books.google.com/books/content?id=7lkNAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+        "description": "Books description...",
+        "owner_comments": "A true classic",
+        "photo": null
+      }
+    }
   },
   "DELETE /api/books/book_id": {
     "description": "Removes book corresponding to given book_id and responds with 204"
