@@ -192,14 +192,14 @@ describe("/api", () => {
         });
     });
     // SORT/FILTER BOOKSHELF BOOKS
-    test.only("GET - allows users to sort bookshelves by date added - default order desc", () => {
+    test("GET - allows users to sort bookshelves by date added - default order desc", () => {
       return request(app)
         .get("/api/users/1/books")
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("date_posted", { descending: true });
         });
     });
-    test.only("GET - allows users to sort bookshelves by date added - default order asc", () => {
+    test("GET - allows users to sort bookshelves by date added - default order asc", () => {
       return request(app)
         .get("/api/users/1/books?sort_by=date_posted&order=asc")
         .then(({ body: { books } }) => {
@@ -238,6 +238,7 @@ describe("/api", () => {
       });
     });
   });
+
   // ALL BOOKS *******************
   describe("/api/books", () => {
     // GET
@@ -411,6 +412,14 @@ describe("/api", () => {
     test("GET individual book, responds with 404 if out of range book id", () => {
       return request(app)
         .get("/api/books/10000")
+        .expect(404)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Book does not exist");
+        });
+    });
+    test("DELETE - 404 nonexistent book", () => {
+      return request(app)
+        .delete("/api/books/100000")
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Book does not exist");
