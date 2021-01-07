@@ -2,7 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("users", (usersTable) => {
     usersTable.text("user_id").primary().unique();
     usersTable.text("username").notNullable().unique();
-    usersTable.text("name").notNullable();
+    usersTable.text("name");
     usersTable.text("email").notNullable();
     usersTable.text("avatar_pic");
     usersTable.specificType("location", "POINT");
