@@ -11,4 +11,10 @@ module.exports = [
     email: "cb95@gmail.com",
     location: "(53.4808, 2.2426)",
   },
+  {
+    username: "testuser",
+    name: "example",
+    email: "example@email.com",
+    location: "(53.4808, 2.2426)",
+  },
 ];
