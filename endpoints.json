@@ -139,7 +139,7 @@
     }
   },
   "GET /api/books": {
-    "description": "Serves up an array of all book objects sorted by most recently added as default. If user_id sent in request body, only books without that owner will be shown",
+    "description": "Serves up an array of all book objects sorted by most recently added as default. If user_id sent in request body, only books without that owner_id will be shown",
     "requestBody": {
       "user_id": 1
     },
