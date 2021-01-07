@@ -37,19 +37,13 @@ exports.fetchUserById = (user_id) => {
 exports.postNewUser = (user) => {
   if (Object.keys(user).length === 0)
     return Promise.reject({ status: 400, msg: "Empty request body" });
-  const { location, ...rest } = user;
-  if (!location) {
-    return Promise.reject({
-      status: 400,
-      msg: "Incomplete request",
-    });
+  const { location } = user;
+  if (location) {
+    user.location = `(${location[0]},${location[1]})`;
   }
-  const newUser = {
-    ...rest,
-    location: `(${location[0]},${location[1]})`,
-  };
+
   return connection
-    .insert(newUser)
+    .insert(user)
     .into("users")
     .returning("*")
     .then((users) => {
@@ -71,6 +65,9 @@ exports.removeUser = (user_id) => {
 exports.patchUser = (user_id, updates) => {
   if (Object.keys(updates).length === 0)
     return Promise.reject({ status: 400, msg: "Empty request body" });
+  if (updates.location) {
+    updates.location = `(${updates.location[0]},${updates.location[1]})`;
+  }
   const { user_score } = updates;
   return connection("users")
     .update(updates)

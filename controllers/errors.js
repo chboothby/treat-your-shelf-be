@@ -4,11 +4,13 @@ exports.handlePSQLErrors = (err, req, res, next) => {
     "22P02": { status: 400, msg: "Invalid input type" },
     42703: { status: 400, msg: "Invalid input type" },
     23503: { status: 400, msg: "Bad request" },
+    23505: { status: 400, msg: "Value not unique" },
     "2201X": { status: 400, msg: "Invalid page request" },
     23502: { status: 400, msg: "Incomplete request" },
   };
 
   const code = err.code;
+
   if (codes[code]) {
     res.status(codes[code].status).send({ msg: codes[code].msg });
   } else next(err);

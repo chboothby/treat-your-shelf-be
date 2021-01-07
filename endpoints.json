@@ -1,0 +1,147 @@
+{
+  "GET /api": {
+    "description": "Serves up a description of all available api endpoints"
+  },
+  "POST /api/users": {
+    "description": "Adds new user and responds with newly created user",
+    "requestExample": {
+      "name": "John",
+      "username": "john87",
+      "email": "john67@email.com",
+      "location": [42.3212, 2.3212]
+    },
+    "responseExample": {
+      "user_id": 1,
+      "name": "John",
+      "username": "john87",
+      "email": "john67@email.com",
+      "avatar_pic": null,
+      "location": "(42.3212, 2.3212)",
+      "user_rating": 3
+    }
+  },
+  "GET /api/users/:user_id": {
+    "description": "Serves up a user object containing the details of user matching given user_id",
+    "responseExample": {
+      "user": {
+        "user_id": 1,
+        "name": "John",
+        "username": "john87",
+        "email": "john67@email.com",
+        "avatar_pic": null,
+        "location": "(42.3212, 2.3212)",
+        "user_rating": 3
+      }
+    }
+  },
+
+  "PATCH user details /api/users/:user_id": {
+    "description": "Updates given user info and responds with updated user of given user_id",
+    "requestExample": {
+      "name": "Bob"
+    },
+    "responseExample": {
+      "user": {
+        "user_id": 1,
+        "name": "Bob",
+        "username": "john87",
+        "email": "john67@email.com",
+        "avatar_pic": null,
+        "location": "(42.3212, 2.3212)",
+        "user_rating": 3
+      }
+    }
+  },
+  "PATCH user score/rating /api/users/:user_id": {
+    "description": "Increments users score (1 - 5) and responds with their new updated rating",
+    "requestExample": {
+      "user_score": 5
+    },
+    "responseExample": {
+      "user": {
+        "user_id": 1,
+        "name": "Bob",
+        "username": "john87",
+        "email": "john67@email.com",
+        "avatar_pic": null,
+        "location": "(42.3212, 2.3212)",
+        "user_rating": 4
+      }
+    }
+  },
+  "DELETE /api/users/:user_id": {
+    "description": "Removes user corresponding to given user_id and responds with 204"
+  },
+  "GET /api/users/:user_id/books": {
+    "description": "Serves up books object containing an array of book objects and book count belonging to user with corresponding user_id",
+    "exampleResponse": {
+      "books": {
+        "book_count": 1,
+        "books": [
+          {
+            "book_id": 1,
+            "title": "Example1",
+            "authors": "Author1",
+            "description": "example description...",
+            "published_year": 2001,
+            "owner_id": 1,
+            "thumbnail": "link-to-book-thumnbnail",
+            "ISBN": 1874983298,
+            "other_identifier": null,
+            "date_posted": "2020-11-11T15:28:31.483Z",
+            "quality": 2,
+            "owner_comments": "my favourite book",
+            "previous_owners": null,
+            "dislay_book": true,
+            "photo": null
+          }
+        ]
+      }
+    }
+  },
+  "POST /api/users/:user_id/books": {
+    "description": "Adds new book to given users book shelf, responds with new book object",
+    "requestExample": {
+      "title": "Example1",
+      "authors": "Author1",
+      "description": "example description...",
+      "published_year": 2001,
+      "thumbnail": "link-to-book-thumnbnail",
+      "ISBN": 1874983298,
+      "quality": 2
+    },
+    "responseExample": {
+      "book": {
+        "book_id": 1,
+        "title": "Example1",
+        "authors": "Author1",
+        "description": "example description...",
+        "published_year": 2001,
+        "owner_id": 1,
+        "thumbnail": "link-to-book-thumnbnail",
+        "ISBN": 1874983298,
+        "other_identifier": null,
+        "date_posted": "2020-11-11T15:28:31.483Z",
+        "quality": 2,
+        "owner_comments": "my favourite book",
+        "previous_owners": null,
+        "dislay_book": true,
+        "photo": null
+      }
+    }
+  },
+  "GET /api/books": {
+    "description": ""
+  },
+  "UPDATE /api/books/:book_id": {
+    "description": "",
+    "requestExample": "",
+    "responseExample": ""
+  },
+  "GET /api/books/:book_id": {
+    "description": ""
+  },
+  "DELETE /api/books/book_id": {
+    "description": ""
+  }
+}

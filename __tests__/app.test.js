@@ -119,6 +119,19 @@ describe("/api", () => {
             expect(msg).toBe("Incomplete request");
           });
       });
+      it.only("POST - 400 incomplete request", () => {
+        return request(app)
+          .post("/api/users")
+          .send({
+            name: "steve",
+            username: "stevelad83",
+            email: "example@email.com",
+          })
+          .expect(400)
+          .then(({ body: { msg } }) => {
+            expect(msg).toBe("Value not unique");
+          });
+      });
       it("GET - 404 id out of range", () => {
         return request(app)
           .get("/api/users/1000")
@@ -415,6 +428,14 @@ describe("/api", () => {
         .expect(404)
         .then(({ body: { msg } }) => {
           expect(msg).toBe("Book does not exist");
+        });
+    });
+    test("DELETE - 400 for invalid book ID", () => {
+      return request(app)
+        .delete("/api/books/notAnId")
+        .expect(400)
+        .then(({ body: { msg } }) => {
+          expect(msg).toBe("Invalid input type");
         });
     });
     test("DELETE - 404 nonexistent book", () => {
