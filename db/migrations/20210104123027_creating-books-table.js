@@ -16,7 +16,7 @@ exports.up = function (knex) {
     booksTable
       .datetime("date_posted", { useTz: false })
       .defaultTo(knex.fn.now());
-    booksTable.integer("quality").notNullable();
+    booksTable.integer("quality");
     booksTable.text("owner_comments");
     booksTable.specificType("photo", "bytea");
     booksTable.specificType("previous_owners", "INT[]");
