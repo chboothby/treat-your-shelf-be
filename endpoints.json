@@ -4,15 +4,15 @@
   },
   "POST /api/users": {
     "description": "Adds new user and responds with newly created user, username must be unique",
-    "mandatoryFields": ["name", "username", "email"],
+    "mandatoryFields": ["user_id", "username", "email"],
     "requestExample": {
-      "name": "John",
+      "user_id": "X134GH98KO0877hhjdbs3",
       "username": "john87",
       "email": "john67@email.com",
       "location": [42.3212, 2.3212]
     },
     "responseExample": {
-      "user_id": 1,
+      "user_id": "X134GH98KO0877hhjdbs3",
       "name": "John",
       "username": "john87",
       "email": "john67@email.com",
@@ -25,7 +25,7 @@
     "description": "Serves up a user object containing the details of user matching given user_id",
     "responseExample": {
       "user": {
-        "user_id": 1,
+        "user_id": "X134GH98KO0877hhjdbs3",
         "name": "John",
         "username": "john87",
         "email": "john67@email.com",
@@ -43,7 +43,7 @@
     },
     "responseExample": {
       "user": {
-        "user_id": 1,
+        "user_id": "X134GH98KO0877hhjdbs3",
         "name": "Bob",
         "username": "john87",
         "email": "john67@email.com",
@@ -60,7 +60,7 @@
     },
     "responseExample": {
       "user": {
-        "user_id": 1,
+        "user_id": "X134GH98KO0877hhjdbs3",
         "name": "Bob",
         "username": "john87",
         "email": "john67@email.com",
@@ -84,7 +84,7 @@
         "book_count": 1,
         "books": [
           {
-            "book_id": 1,
+            "book_id": "X134GH98KO0877hhjdbs3",
             "title": "Example1",
             "authors": "Author1",
             "description": "example description...",
@@ -124,7 +124,7 @@
         "authors": "Author1",
         "description": "example description...",
         "published_year": 2001,
-        "owner_id": 1,
+        "owner_id": "X134GH98KO0877hhjdbs3",
         "thumbnail": "link-to-book-thumnbnail",
         "ISBN": 1874983298,
         "other_identifier": null,
@@ -141,7 +141,7 @@
   "GET /api/books": {
     "description": "Serves up an array of all book objects sorted by most recently added as default. If user_id sent in request body, only books without that owner_id will be shown",
     "requestBody": {
-      "user_id": 1
+      "user_id": "X134GH98KO0877hhjdbs3"
     },
     "acceptedQueries": [
       {
@@ -150,14 +150,32 @@
         "title": "bookTitle",
         "author": "bookAuthor"
       }
-    ]
+    ],
+    "exampleResponse": {
+      "book_count": 1,
+      "books": [
+        {
+          "owner_id": "X134GH98KO0877hhjdbs3",
+          "title": "The Count of Monte Cristo",
+          "authors": "Alexandre Dumas",
+          "published_year": "1945",
+          "ISBN": null,
+          "other_identifier": "STANFORD:36105121763440",
+          "quality": "1",
+          "thumbnail": "http://books.google.com/books/content?id=7lkNAQAAIAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+          "description": "Books description...",
+          "owner_comments": "A true classic",
+          "photo": null
+        }
+      ]
+    }
   },
   "UPDATE /api/books/:book_id": {
     "description": "Updates given book info and responds with updated book of given book_id",
     "requestExample": { "owner_comments": "A true classic" },
     "responseExample": {
       "book": {
-        "owner_id": "1",
+        "owner_id": "X134GH98KO0877hhjdbs3",
         "title": "The Count of Monte Cristo",
         "authors": "Alexandre Dumas",
         "published_year": "1945",
@@ -175,7 +193,7 @@
     "description": "Serves up a book object containing the details of book matching given book_id",
     "exampleResponse": {
       "book": {
-        "owner_id": "1",
+        "owner_id": "X134GH98KO0877hhjdbs3",
         "title": "The Count of Monte Cristo",
         "authors": "Alexandre Dumas",
         "published_year": "1945",

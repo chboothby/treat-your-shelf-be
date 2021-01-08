@@ -2,7 +2,7 @@ exports.up = function (knex) {
   return knex.schema.createTable("books", (booksTable) => {
     booksTable.increments("book_id").primary();
     booksTable
-      .integer("owner_id")
+      .text("owner_id")
       .references("users.user_id")
       .onDelete("cascade")
       .notNullable();
