@@ -71,16 +71,7 @@ exports.patchBook = (
             owner_id: new_owner_id,
             display_book,
           })
-          .modify((queryBuilder) => {
-            if (new_owner_id) {
-              queryBuilder.update({
-                previous_owners: connection.raw(
-                  "array_append(previous_owners, ?)",
-                  [owner_id]
-                ),
-              });
-            }
-          })
+
           .where("book_id", "=", book_id)
           .returning("*")
           .then((book) => {

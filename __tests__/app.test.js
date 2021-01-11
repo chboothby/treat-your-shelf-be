@@ -2,6 +2,8 @@ process.env.NODE_ENV = "test";
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
+// 1 vQyKA3FuWdSAxBVs8MX3rKYCefi1
+// 2 knQicRC1k1UGAROHO5HlnSYUIfS2
 
 describe("/api", () => {
   beforeEach(() => connection.seed.run());
@@ -22,6 +24,7 @@ describe("/api", () => {
       return request(app)
         .post("/api/users")
         .send({
+          user_id: "kjhDKJH98",
           username: "clsfoy",
           name: "charlie",
           email: "charlie@gmail.com",
@@ -43,7 +46,7 @@ describe("/api", () => {
     describe("/api/users/:user_id", () => {
       test("GET request returns 200 and object containing user data with specified ID", () => {
         return request(app)
-          .get("/api/users/1")
+          .get("/api/users/vQyKA3FuWdSAxBVs8MX3rKYCefi1")
           .expect(200)
           .then(({ body: { user } }) => {
             expect(Object.keys(user)).toEqual([
@@ -59,7 +62,7 @@ describe("/api", () => {
       });
       test("PATCH returns 201 and object containing updated user", () => {
         return request(app)
-          .patch("/api/users/2")
+          .patch("/api/users/vQyKA3FuWdSAxBVs8MX3rKYCefi1")
           .send({
             username: "bob",
           })
@@ -70,7 +73,7 @@ describe("/api", () => {
       });
       test("PATCH returns 201 and updates user rating", () => {
         return request(app)
-          .patch("/api/users/2")
+          .patch("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2")
           .send({
             user_score: 3,
           })
@@ -81,13 +84,13 @@ describe("/api", () => {
       });
       test("DELETE request returns 204 for successful delete", () => {
         return request(app)
-          .delete("/api/users/1")
+          .delete("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2")
           .expect(204)
           .then(() => {
             return connection
               .select("*")
               .from("users")
-              .where("user_id", "=", 1);
+              .where("user_id", "=", "knQicRC1k1UGAROHO5HlnSYUIfS2");
           })
           .then((rows) => {
             expect(rows.length).toBe(0);
@@ -133,6 +136,7 @@ describe("/api", () => {
         return request(app)
           .post("/api/users")
           .send({
+            user_id: "kjhakjhf",
             name: "steve",
             username: "stevelad83",
             email: "example@email.com",
@@ -150,28 +154,12 @@ describe("/api", () => {
             expect(msg).toBe("User does not exist");
           });
       });
-      it("GET - 400 id NaN", () => {
-        return request(app)
-          .get("/api/users/NaN")
-          .expect(400)
-          .then(({ body: { msg } }) => {
-            expect(msg).toBe("Invalid input type");
-          });
-      });
       it("DELETE - 404 id out of range", () => {
         return request(app)
           .delete("/api/users/1000")
           .expect(404)
           .then(({ body: { msg } }) => {
             expect(msg).toBe("User does not exist");
-          });
-      });
-      it("DELETE - 400 id NaN", () => {
-        return request(app)
-          .delete("/api/users/NaN")
-          .expect(400)
-          .then(({ body: { msg } }) => {
-            expect(msg).toBe("Invalid input type");
           });
       });
       it("PATCH - 400 empty request", () => {
@@ -207,7 +195,7 @@ describe("/api", () => {
     // GET
     test("GET - responds with 200 and array of all books owned by specified owner", () => {
       return request(app)
-        .get("/api/users/1/books")
+        .get("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/books")
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.book_count).toBe(2);
@@ -217,21 +205,23 @@ describe("/api", () => {
     // SORT/FILTER BOOKSHELF BOOKS
     test("GET - allows users to sort bookshelves by date added - default order desc", () => {
       return request(app)
-        .get("/api/users/1/books")
+        .get("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/books")
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("date_posted", { descending: true });
         });
     });
     test("GET - allows users to sort bookshelves by date added - default order asc", () => {
       return request(app)
-        .get("/api/users/1/books?sort_by=date_posted&order=asc")
+        .get(
+          "/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/books?sort_by=date_posted&order=asc"
+        )
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("date_posted");
         });
     });
     test("GET returns books object with empty array if user has no books on bookshelf", () => {
       return request(app)
-        .get("/api/users/3/books")
+        .get("/api/users/hqkndna98934lkmdsDD88m/books")
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.book_count).toBe(0);
@@ -242,7 +232,7 @@ describe("/api", () => {
     // POST
     test("POST - responds with 201, allows user to post book and returns object containing newly added book", () => {
       return request(app)
-        .post("/api/users/1/books")
+        .post("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/books")
         .send({
           title: "Pride and Prejudice",
           authors: ["Jane Austen", "Steve"],
@@ -255,7 +245,7 @@ describe("/api", () => {
         })
         .expect(201)
         .then(({ body: { book } }) => {
-          expect(Object.keys(book).length).toBe(16);
+          expect(Object.keys(book).length).toBe(15);
         });
     });
     // ERRORS
@@ -268,14 +258,7 @@ describe("/api", () => {
             expect(msg).toBe("User does not exist");
           });
       });
-      test("GET - 400 user ID NaN", () => {
-        return request(app)
-          .get("/api/users/burt/books")
-          .expect(400)
-          .then(({ body: { msg } }) => {
-            expect(msg).toBe("Invalid input type");
-          });
-      });
+
       test("POST - 400 empty request", () => {
         return request(app)
           .post("/api/users/1/books")
@@ -311,7 +294,7 @@ describe("/api", () => {
     test("GET all books, responds with 200 and an array of book objects and book count key", () => {
       return request(app)
         .get("/api/books")
-        .send({ user_id: 1 })
+        .send({ user_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.book_count).toBe(2);
@@ -322,7 +305,7 @@ describe("/api", () => {
     test("GET return books SORTED by most recently added as default", () => {
       return request(app)
         .get("/api/books")
-        .send({ user_id: 1 })
+        .send({ user_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("date_posted", { descending: true });
@@ -331,7 +314,7 @@ describe("/api", () => {
     test("GET accepts queries sort_by and order", () => {
       return request(app)
         .get("/api/books?sort_by=date_posted&order=asc")
-        .send({ user_id: 1 })
+        .send({ user_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("date_posted");
@@ -340,7 +323,7 @@ describe("/api", () => {
     test("GET accepts queries SORT_BY and ORDER", () => {
       return request(app)
         .get("/api/books?sort_by=published_year")
-        .send({ user_id: 1 })
+        .send({ user_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("published_year", {
@@ -351,7 +334,7 @@ describe("/api", () => {
     test("GET accepts queries SORT_BY and ORDER", () => {
       return request(app)
         .get("/api/books?sort_by=quality&order=asc")
-        .send({ user_id: 1 })
+        .send({ user_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(200)
         .then(({ body: { books } }) => {
           expect(books.books).toBeSortedBy("quality");
@@ -385,7 +368,7 @@ describe("/api", () => {
         .expect(200)
         .then(({ body: { book } }) => {
           expect(book.book_id).toBe(4);
-          expect(Object.keys(book).length).toBe(16);
+          expect(Object.keys(book).length).toBe(15);
         });
     });
     test("PATCH responds with 201 and object containing updated book", () => {
@@ -407,11 +390,11 @@ describe("/api", () => {
     test("PATCH - book swap responds with 201 and updated book (updates owner and adds prev owner)", () => {
       return request(app)
         .patch("/api/books/2")
-        .send({ new_owner_id: 1 })
+        .send({ new_owner_id: "vQyKA3FuWdSAxBVs8MX3rKYCefi1" })
         .expect(201)
         .then(({ body: { book } }) => {
-          expect(book.owner_id).toBe(1);
-          expect(book.previous_owners).toEqual([1, 2]);
+          expect(book.owner_id).toBe("vQyKA3FuWdSAxBVs8MX3rKYCefi1");
+          //expect(book.previous_owners).toEqual([1, 2]);
         });
     });
     // DELETE
