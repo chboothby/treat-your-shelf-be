@@ -51,8 +51,9 @@ exports.fetchBookById = (book_id) => {
 };
 
 exports.patchBook = (
-  { owner_comments, quality, photo, new_owner_id, display_book },
-  book_id
+  { owner_comments, quality, photo, display_book },
+  book_id,
+  requester_id
 ) => {
   return connection
     .select("owner_id")
@@ -62,24 +63,13 @@ exports.patchBook = (
       if (response.length === 0) {
         return Promise.reject({ status: 404, msg: "Book does not exist" });
       } else {
-        const { owner_id } = response[0];
         return connection("books")
           .update({
             owner_comments,
             quality,
             photo,
-            owner_id: new_owner_id,
+            owner_id: requester_id,
             display_book,
-          })
-          .modify((queryBuilder) => {
-            if (new_owner_id) {
-              queryBuilder.update({
-                previous_owners: connection.raw(
-                  "array_append(previous_owners, ?)",
-                  [owner_id]
-                ),
-              });
-            }
           })
           .where("book_id", "=", book_id)
           .returning("*")

@@ -209,5 +209,60 @@
   },
   "DELETE /api/books/book_id": {
     "description": "Removes book corresponding to given book_id and responds with 204"
+  },
+  "GET /api/users/:user_id/exchanges": {
+    "description": "Responds with an array of exchange objects belonging to that user",
+    "exampleResponse": {
+      "exchanges": [
+        {
+          "exchange_id": 2,
+          "owner_id": "vQyKA3FuWdSAxBVs8MX3rKYCefi1",
+          "requester_id": "knQicRC1k1UGAROHO5HlnSYUIfS2",
+          "book_sent": false,
+          "book_received": false,
+          "book_id": 2
+        },
+        {
+          "exchange_id": 1,
+          "owner_id": "knQicRC1k1UGAROHO5HlnSYUIfS2",
+          "requester_id": "vQyKA3FuWdSAxBVs8MX3rKYCefi1",
+          "book_sent": false,
+          "book_received": false,
+          "book_id": 1
+        }
+      ]
+    }
+  },
+  "POST /api/users/:user_id/exchanges": {
+    "description": "Allows user to make exchange request",
+    "exampleRequest": {
+      "book_id": 3
+    },
+    "exampleResponse": {
+      "exchange": {
+        "exchange_id": 3,
+        "owner_id": "knQicRC1k1UGAROHO5HlnSYUIfS2",
+        "requester_id": "vQyKA3FuWdSAxBVs8MX3rKYCefi1",
+        "book_sent": false,
+        "book_received": false,
+        "book_id": 3
+      }
+    }
+  },
+  "PATCH /api/users/:user_id/exchanges/exchange_id": {
+    "description": "Allows users to say if they have sent/received a book, if book received and sent are both true, the exchange will be deleted and the book will change ownership",
+    "exampleRequest": {
+      "book_sent": true
+    },
+    "exampleResponse": {
+      "exchange": {
+        "exchange_id": 3,
+        "owner_id": "knQicRC1k1UGAROHO5HlnSYUIfS2",
+        "requester_id": "vQyKA3FuWdSAxBVs8MX3rKYCefi1",
+        "book_sent": true,
+        "book_received": false,
+        "book_id": 3
+      }
+    }
   }
 }

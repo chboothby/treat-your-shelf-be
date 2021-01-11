@@ -8,6 +8,12 @@ const {
   getAllUsersBooks,
   addNewBook,
 } = require("../controllers/users");
+const {
+  getAllUsersExchanges,
+  addExchangeRequest,
+  updateExchangeRequest,
+} = require("../controllers/exchanges");
+const { patch } = require("./booksRouter");
 
 usersRouter.route("/").post(addNewUser).all(send405);
 usersRouter
@@ -21,5 +27,11 @@ usersRouter
   .get(getAllUsersBooks)
   .post(addNewBook)
   .all(send405);
-
+usersRouter
+  .route("/:user_id/exchanges")
+  .get(getAllUsersExchanges)
+  .post(addExchangeRequest);
+usersRouter
+  .route("/:user_id/exchanges/:exchange_id")
+  .patch(updateExchangeRequest);
 module.exports = usersRouter;
