@@ -9,13 +9,10 @@ exports.seed = function (knex) {
     .then(() => {
       return knex.insert(userData).into("users").returning("*");
     })
-    .then((userRows) => {
+    .then(() => {
       return knex.insert(bookData).into("books").returning("*");
     })
-    .then((booksRows) => {
+    .then(() => {
       return knex.insert(exchangeData).into("exchanges").returning("*");
-    })
-    .then((exchangeRows) => {
-      console.log(exchangeRows);
     });
 };

@@ -483,4 +483,54 @@ describe("/api", () => {
         });
     });
   });
+  // EXCHANGING BOOKS
+  describe.only("/api/books/exchanges", () => {
+    it.only("GET responds with 200 and array of all exchanges", () => {
+      return request(app)
+        .get("/api/users/vQyKA3FuWdSAxBVs8MX3rKYCefi1/exchanges")
+        .expect(200)
+        .then(({ body: { exchanges } }) => {
+          expect(exchanges.length).toBe(2);
+        });
+    });
+    it("POST responds with 201 and exchange request submitted", () => {
+      return request(app)
+        .post("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/exchanges")
+        .send({ book_id: 4 })
+        .expect(201)
+        .then(({ body: { exchange } }) => {
+          expect(typeof exchange).toBe("object");
+        });
+    });
+    it("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
+      return request(app)
+        .patch("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/exchanges/1")
+        .send({ book_sent: true })
+        .expect(201)
+        .then(({ body: { exchange } }) => {
+          expect(exchange.book_sent).toBe(true);
+        });
+    });
+    it("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
+      return request(app)
+        .patch("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/exchanges/1")
+        .send({ book_sent: true })
+        .then(() => {
+          return request(app)
+            .patch("/api/users/vQyKA3FuWdSAxBVs8MX3rKYCefi1/exchanges/1")
+            .send({ book_received: true })
+            .expect(201)
+            .then(({ body: { exchange } }) => {
+              expect(exchange.book_received).toBe(true);
+              return connection
+                .select("owner_id")
+                .from("books")
+                .where("book_id", 1)
+                .then(([{ owner_id }]) => {
+                  expect(owner_id).toBe("vQyKA3FuWdSAxBVs8MX3rKYCefi1");
+                });
+            });
+        });
+    });
+  });
 });
