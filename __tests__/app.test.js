@@ -2,6 +2,7 @@ process.env.NODE_ENV = "test";
 const app = require("../app");
 const request = require("supertest");
 const connection = require("../db/connection");
+const { response } = require("express");
 // 1 vQyKA3FuWdSAxBVs8MX3rKYCefi1
 // 2 knQicRC1k1UGAROHO5HlnSYUIfS2
 
@@ -511,7 +512,7 @@ describe("/api", () => {
           expect(exchange.book_sent).toBe(true);
         });
     });
-    it("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
+    it.only("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
       return request(app)
         .patch("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/exchanges/1")
         .send({ book_sent: true })
@@ -528,6 +529,13 @@ describe("/api", () => {
                 .where("book_id", 1)
                 .then(([{ owner_id }]) => {
                   expect(owner_id).toBe("vQyKA3FuWdSAxBVs8MX3rKYCefi1");
+                  return connection
+                    .select("*")
+                    .from("exchanges")
+                    .where("exchange_id", 1)
+                    .then((response) => {
+                      expect(response.length).toBe(0);
+                    });
                 });
             });
         });

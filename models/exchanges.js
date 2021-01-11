@@ -24,11 +24,12 @@ exports.postExchangeRequest = (user_id, book_id) => {
       return response[0];
     });
 };
-const removeExchange = (exchange_id) => {
-  return connection("exchanges")
-    .delete()
-    .where("exchange_id", "=", exchange_id);
-};
+
+// const removeExchange = (exchange_id) => {
+//   return connection("exchanges")
+//     .delete()
+//     .where("exchange_id", "=", exchange_id);
+// };
 
 exports.patchExchangeRequest = (
   { user_id, exchange_id },
@@ -41,9 +42,16 @@ exports.patchExchangeRequest = (
     .then((response) => {
       const { book_sent, book_received, book_id, requester_id } = response[0];
       if (book_sent && book_received) {
-        patchBook({}, book_id, requester_id).then(() => {});
-        removeExchange(exchange_id);
-      }
-      return response[0];
+        patchBook({}, book_id, requester_id);
+        return connection("exchanges")
+          .delete()
+          .where("exchange_id", exchange_id)
+          .then((res) => {
+            console.log(res);
+          })
+          .then(() => {
+            return response[0];
+          });
+      } else return response[0];
     });
 };
