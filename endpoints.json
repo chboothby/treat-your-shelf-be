@@ -264,5 +264,8 @@
         "book_id": 3
       }
     }
+  },
+  "DELETE /api/users/:user_id/exchanges/:exchange_id": {
+    "description": "Removes exchange corresponding to given exchange_id and responds with 204"
   }
 }
