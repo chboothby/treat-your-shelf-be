@@ -512,7 +512,7 @@ describe("/api", () => {
           expect(exchange.book_sent).toBe(true);
         });
     });
-    it.only("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
+    it("PATCH responds with 201 and updated exchange request if one side has sent/received book", () => {
       return request(app)
         .patch("/api/users/knQicRC1k1UGAROHO5HlnSYUIfS2/exchanges/1")
         .send({ book_sent: true })
@@ -537,6 +537,20 @@ describe("/api", () => {
                       expect(response.length).toBe(0);
                     });
                 });
+            });
+        });
+    });
+    it.only("DELETE responds with 204", () => {
+      return request(app)
+        .delete("/api/users/vQyKA3FuWdSAxBVs8MX3rKYCefi1/exchanges/1")
+        .expect(204)
+        .then(() => {
+          return connection
+            .select("*")
+            .from("exchanges")
+            .where("exchange_id", 1)
+            .then((response) => {
+              expect(response.length).toBe(0);
             });
         });
     });

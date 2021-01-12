@@ -25,11 +25,16 @@ exports.postExchangeRequest = (user_id, book_id) => {
     });
 };
 
-// const removeExchange = (exchange_id) => {
-//   return connection("exchanges")
-//     .delete()
-//     .where("exchange_id", "=", exchange_id);
-// };
+exports.deleteExchange = (exchange_id) => {
+  return connection("exchanges")
+    .delete()
+    .where("exchange_id", exchange_id)
+    .then((rows) => {
+      if (rows === 0) {
+        return Promise.reject({ status: 404, msg: "Exchange id not found" });
+      } else return rows;
+    });
+};
 
 exports.patchExchangeRequest = (
   { user_id, exchange_id },

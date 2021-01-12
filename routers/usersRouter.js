@@ -12,6 +12,7 @@ const {
   getAllUsersExchanges,
   addExchangeRequest,
   updateExchangeRequest,
+  removeExchange,
 } = require("../controllers/exchanges");
 const { patch } = require("./booksRouter");
 
@@ -30,8 +31,11 @@ usersRouter
 usersRouter
   .route("/:user_id/exchanges")
   .get(getAllUsersExchanges)
-  .post(addExchangeRequest);
+  .post(addExchangeRequest)
+  .all(send405);
 usersRouter
   .route("/:user_id/exchanges/:exchange_id")
-  .patch(updateExchangeRequest);
+  .patch(updateExchangeRequest)
+  .delete(removeExchange)
+  .all(send405);
 module.exports = usersRouter;
