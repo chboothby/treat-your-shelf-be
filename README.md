@@ -1,4 +1,4 @@
-# treat-your-shelf
+# Treat Your Shelf API
 
 Treat Your Shelf is a book sharing app designed to encourage and assist reading & sharing amongst people from all walks of life without needing to pay a penny.
 
